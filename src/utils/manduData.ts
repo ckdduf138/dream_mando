@@ -2,19 +2,33 @@ interface ManduQuestion {
   q: string
   a1: string
   a2: string
+  timeLabel?: string
 }
 
-export const manduQuestions: ManduQuestion[] = [
+export const studentQuestions: ManduQuestion[] = [
   { q: "나의 기상 스타일은?", a1: "조금 더 자고 싶어", a2: "여유롭게 하루를 시작해" },
-  { q: "출근길 선택", a1: "회사 근처가 최고", a2: "사생활 보호가 중요해" },
-  { q: "선호하는 동료 관계", a1: "업무만 집중하는 사이", a2: "일상을 나누는 친구" },
-  { q: "회의 준비 스타일", a1: "완벽하게 준비해야 해", a2: "적당히 준비하면 돼" },
-  { q: "스트레스 해소법", a1: "친구들과 수다떨기", a2: "전문가 상담 찾아보기" },
-  { q: "퇴근 후 나는?", a1: "밖에서 에너지 충전", a2: "집으로 직행" },
-  { q: "집 도착 후", a1: "혼자만의 시간", a2: "가족과 대화" },
+  { q: "아침에 나를 깨우는 건?", a1: "마감/과제/출석", a2: "나만의 루틴" },
+  { q: "수업(또는 일정) 스타일", a1: "필요한 것만 딱", a2: "꼼꼼하게 챙겨" },
+  { q: "친구/동기 관계", a1: "적당한 거리감", a2: "자주 만나고 싶어" },
+  { q: "갑자기 일정이 바뀌면?", a1: "당황… 계획 다시", a2: "오히려 재밌어" },
+  { q: "에너지 충전 방법", a1: "밖에서 충전", a2: "혼자 조용히" },
+  { q: "집(기숙사) 들어가면", a1: "나만의 시간", a2: "가족/룸메와 수다" },
   { q: "수면 스타일", a1: "잠들기 어려워", a2: "누우면 바로 잠들어" },
-  { q: "불금, 주말 계획은?", a1: "부업이나 자기계발", a2: "푹 쉬기" },
-  { q: "귀신의 집 반응", a1: "전혀 안 무서워", a2: "너무 무서워" }
+  { q: "주말 계획은?", a1: "자기계발/아르바이트", a2: "푹 쉬기" },
+  { q: "놀이공원/귀신의 집", a1: "전혀 안 무서워", a2: "너무 무서워" },
+]
+
+export const workerQuestions: ManduQuestion[] = [
+  { timeLabel: '오전 8시', q: '출근 준비, 나는?', a1: '최대한 빠르게 준비', a2: '루틴대로 여유롭게' },
+  { timeLabel: '오전 10시', q: '업무 시작 텐션은?', a1: '조용히 집중 모드', a2: '가볍게 대화하며 워밍업' },
+  { timeLabel: '오후 12시', q: '점심 선택', a1: '늘 먹던 안정픽', a2: '새로운 메뉴 도전' },
+  { timeLabel: '오후 2시', q: '회의/미팅이 잡히면', a1: '완벽하게 준비해야 해', a2: '핵심만 챙기면 돼' },
+  { timeLabel: '오후 4시', q: '갑자기 일이 몰리면', a1: '일단 밀어붙여', a2: '우선순위부터 정리' },
+  { timeLabel: '오후 6시', q: '퇴근 후 나는?', a1: '밖에서 에너지 충전', a2: '집으로 직행' },
+  { timeLabel: '오후 8시', q: '저녁 시간', a1: '사람들과 약속', a2: '혼자 쉬는 시간이 필요' },
+  { timeLabel: '오후 10시', q: '오늘 하루 정리', a1: '내일 계획까지 세워', a2: '오늘은 오늘로 끝' },
+  { timeLabel: '자정', q: '수면 스타일', a1: '잠들기 어려워', a2: '누우면 바로 잠들어' },
+  { timeLabel: '주말', q: '주말 계획은?', a1: '자기계발/부업', a2: '푹 쉬기' },
 ]
 
 export type ManduType = 'creative' | 'reliable' | 'social' | 'calm'
@@ -53,10 +67,10 @@ export const manduResults: Record<ManduType, ManduResult> = {
   }
 }
 
-export function calculateManduType(answers: string[]): ManduType {
+export function calculateManduType(answers: string[], questions: ManduQuestion[]): ManduType {
   // 간단한 로직: 답변 패턴 기반
   const score = answers.reduce((acc, answer, index) => {
-    return acc + (answer === manduQuestions[index].a1 ? 1 : 0)
+    return acc + (answer === questions[index]?.a1 ? 1 : 0)
   }, 0)
 
   if (score >= 8) return 'creative'

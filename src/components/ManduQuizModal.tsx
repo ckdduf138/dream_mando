@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import Modal from '@components/Modal'
-import { manduQuestions, calculateManduType, manduResults } from '@utils/manduData'
+import { studentQuestions, workerQuestions, calculateManduType, manduResults } from '@utils/manduData'
+import QuizTopBar from '@components/quiz/QuizTopBar'
+import QuizChoiceButton from '@components/quiz/QuizChoiceButton'
+import QuizResultView from '@components/quiz/QuizResultView'
 
 interface ManduQuizModalProps {
   isOpen: boolean
@@ -8,34 +11,63 @@ interface ManduQuizModalProps {
 }
 
 export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps) {
+  const [category, setCategory] = useState<'student' | 'worker' | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<'student' | 'worker' | null>(null)
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<string[]>([])
   const [showResult, setShowResult] = useState(false)
   const [selectedChoice, setSelectedChoice] = useState<string | null>(null)
 
-  const handleAnswer = (answer: string) => {
-    if (!selectedChoice) return
-    
+  const questions = category === 'worker' ? workerQuestions : studentQuestions
+
+  const commitAnswer = (answer: string) => {
     const newAnswers = [...answers, answer]
     setAnswers(newAnswers)
     setSelectedChoice(null)
-
-    if (step < manduQuestions.length - 1) {
-      setStep(step + 1)
-    } else {
-      setShowResult(true)
-    }
+    return newAnswers
   }
 
   const handlePrevious = () => {
+    if (category && step === 0 && !showResult) {
+      // Go back to category selection screen.
+      setCategory(null)
+      setSelectedCategory(category)
+      setStep(0)
+      setAnswers([])
+      setSelectedChoice(null)
+      setShowResult(false)
+      return
+    }
+
     if (step > 0) {
-      setStep(step - 1)
-      setAnswers(answers.slice(0, -1))
-      setSelectedChoice(answers[step - 1] || null)
+      const nextStep = step - 1
+      const nextAnswers = answers.slice(0, -1)
+      setStep(nextStep)
+      setAnswers(nextAnswers)
+      setSelectedChoice(nextAnswers[nextStep] || null)
     }
   }
 
+  const handleChoiceClick = (choice: string) => {
+    if (selectedChoice === choice) {
+      commitAnswer(choice)
+
+      if (step < questions.length - 1) {
+        setStep(step + 1)
+        return
+      }
+
+      // Final confirm: show result.
+      setShowResult(true)
+      return
+    }
+
+    setSelectedChoice(choice)
+  }
+
   const handleReset = () => {
+    setCategory(null)
+    setSelectedCategory(null)
     setStep(0)
     setAnswers([])
     setShowResult(false)
@@ -47,153 +79,159 @@ export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps)
     onClose()
   }
 
-  const currentQuestion = manduQuestions[step]
-  const result = showResult ? manduResults[calculateManduType(answers)] : null
+  const currentQuestion = questions[step]
+  const result = showResult ? manduResults[calculateManduType(answers, questions)] : null
   const previousAnswer = answers[step]
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} size="md">
-      {/* Close Button */}
-      <button
-        onClick={handleClose}
-        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors z-10"
-      >
-        <svg className="w-6 h-6 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+    <Modal isOpen={isOpen} onClose={handleClose} size="md" scrollable={!showResult}>
+      <div className="relative">
+        {/* 귀여운 만두 데코 (메인 톤과 연결) */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.08]">
+          <img
+            src="/mandu.png"
+            alt=""
+            className="absolute top-24 right-2 sm:top-28 sm:right-4 w-20 h-20 object-contain rotate-12"
+          />
+          <img
+            src="/mandu.png"
+            alt=""
+            className="absolute -bottom-14 -left-14 sm:-bottom-16 sm:-left-16 w-28 h-28 object-contain -rotate-12"
+          />
+        </div>
 
-      {!showResult ? (
-        <div className="space-y-6 pt-4">
-          {/* Progress Bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm text-neutral-500">
-              <span>{step + 1} / {manduQuestions.length}</span>
-              <span>{Math.round(((step + 1) / manduQuestions.length) * 100)}%</span>
-            </div>
-            <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-neutral-900 transition-all duration-300 rounded-full"
-                style={{ width: `${((step + 1) / manduQuestions.length) * 100}%` }}
+        {!showResult ? (
+          <div className="relative">
+            {category ? (
+              <>
+                <QuizTopBar
+                  step={step}
+                  total={questions.length}
+                  onBack={handlePrevious}
+                  onClose={handleClose}
+                  backEnabled={step > 0 || Boolean(category)}
+                />
+
+                {/* Question + choices */}
+                <div className="pt-6">
+                  <h3 className="text-lg sm:text-xl font-bold text-neutral-900 leading-relaxed">
+                    {currentQuestion.q}
+                  </h3>
+                  <p className="mt-2 text-xs text-neutral-500 leading-relaxed">
+                    {selectedChoice
+                      ? `선택한 답을 한 번 더 탭하면 ${step === questions.length - 1 ? '완료' : '다음'}로 넘어가요.`
+                      : '답을 탭해서 선택하세요.'}
+                  </p>
+
+                  <div className="mt-5 space-y-3">
+                    <QuizChoiceButton
+                      text={currentQuestion.a1}
+                      onClick={() => handleChoiceClick(currentQuestion.a1)}
+                      isSelected={selectedChoice === currentQuestion.a1}
+                      isPreviouslySelected={previousAnswer === currentQuestion.a1}
+                    />
+                    <QuizChoiceButton
+                      text={currentQuestion.a2}
+                      onClick={() => handleChoiceClick(currentQuestion.a2)}
+                      isSelected={selectedChoice === currentQuestion.a2}
+                      isPreviouslySelected={previousAnswer === currentQuestion.a2}
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="py-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-primary-50 border-2 border-primary-200 flex items-center justify-center">
+                      <img src="/mandu.png" alt="" className="w-6 h-6 object-contain" />
+                    </div>
+                    <div>
+                      <div className="text-base font-bold text-neutral-900">퀴즈 시작하기</div>
+                      <div className="text-xs text-neutral-600">먼저 카테고리를 골라줘</div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleClose}
+                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors"
+                    aria-label="닫기"
+                  >
+                    <svg className="w-6 h-6 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="mt-6 grid grid-cols-1 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (selectedCategory === 'student') {
+                        setCategory('student')
+                        setStep(0)
+                        setAnswers([])
+                        setShowResult(false)
+                        setSelectedChoice(null)
+                        return
+                      }
+                      setSelectedCategory('student')
+                    }}
+                    className={`w-full px-5 py-4 text-left rounded-2xl border-2 transition-colors ${
+                      selectedCategory === 'student'
+                        ? 'border-primary-600 bg-primary-50'
+                        : 'border-primary-200 bg-white hover:bg-neutral-50'
+                    }`}
+                  >
+                    <div className="text-base font-bold text-neutral-900">대학생</div>
+                    <div className="mt-1 text-sm text-neutral-600">지금 컨셉 그대로 시작해요</div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (selectedCategory === 'worker') {
+                        setCategory('worker')
+                        setStep(0)
+                        setAnswers([])
+                        setShowResult(false)
+                        setSelectedChoice(null)
+                        return
+                      }
+                      setSelectedCategory('worker')
+                    }}
+                    className={`w-full px-5 py-4 text-left rounded-2xl border-2 transition-colors ${
+                      selectedCategory === 'worker'
+                        ? 'border-primary-600 bg-primary-50'
+                        : 'border-primary-200 bg-white hover:bg-neutral-50'
+                    }`}
+                  >
+                    <div className="text-base font-bold text-neutral-900">직장인</div>
+                    <div className="mt-1 text-sm text-neutral-600">아침부터 저녁까지 시간 흐름으로!</div>
+                  </button>
+                </div>
+
+                <p className="mt-4 text-xs text-neutral-500 leading-relaxed">
+                  {selectedCategory
+                    ? '선택한 카테고리를 한 번 더 탭하면 시작해요.'
+                    : '카테고리를 탭해서 선택하세요.'}
+                </p>
+              </div>
+            )}
+          </div>
+        ) : (
+          result && (
+            <div className="relative">
+              <QuizResultView
+                result={result}
+                onReset={handleReset}
+                onClose={handleClose}
+                onShare={() => window.open('https://instagram.com/dreaming_mandu', '_blank')}
               />
             </div>
-          </div>
-
-          {/* Question */}
-          <div className="py-6">
-            <h3 className="text-lg sm:text-xl font-bold text-neutral-900 text-center mb-8 leading-relaxed px-2">
-              {currentQuestion.q}
-            </h3>
-            <div className="space-y-3">
-              <button
-                onClick={() => setSelectedChoice(currentQuestion.a1)}
-                className={`w-full px-5 py-4 text-left rounded-xl border-2 transition-all text-sm sm:text-base ${
-                  selectedChoice === currentQuestion.a1
-                    ? 'border-neutral-900 bg-neutral-900 text-white'
-                    : previousAnswer === currentQuestion.a1
-                    ? 'border-neutral-300 bg-neutral-50'
-                    : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50'
-                }`}
-              >
-                {currentQuestion.a1}
-              </button>
-              <button
-                onClick={() => setSelectedChoice(currentQuestion.a2)}
-                className={`w-full px-5 py-4 text-left rounded-xl border-2 transition-all text-sm sm:text-base ${
-                  selectedChoice === currentQuestion.a2
-                    ? 'border-neutral-900 bg-neutral-900 text-white'
-                    : previousAnswer === currentQuestion.a2
-                    ? 'border-neutral-300 bg-neutral-50'
-                    : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50'
-                }`}
-              >
-                {currentQuestion.a2}
-              </button>
-            </div>
-          </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center pt-4">
-            <button
-              onClick={handlePrevious}
-              disabled={step === 0}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-                step === 0
-                  ? 'text-neutral-300 cursor-not-allowed'
-                  : 'text-neutral-700 hover:bg-neutral-100'
-              }`}
-            >
-              ← 이전
-            </button>
-            
-            <button
-              onClick={() => handleAnswer(selectedChoice!)}
-              disabled={!selectedChoice}
-              className={`px-6 py-2.5 text-sm font-semibold rounded-lg transition-all ${
-                selectedChoice
-                  ? 'bg-neutral-900 text-white hover:bg-neutral-800 active:scale-95'
-                  : 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
-              }`}
-            >
-              {step === manduQuestions.length - 1 ? '완료' : '다음'}
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="text-center space-y-6 py-8">
-          {/* Result */}
-          <div className="space-y-4">
-            <div className="w-32 h-32 mx-auto mb-4">
-              <img 
-                src="/mandu.png" 
-                alt="만두 캐릭터" 
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">
-                {result?.title}
-              </h3>
-              <p className="text-neutral-600 text-base sm:text-lg">
-                {result?.description}
-              </p>
-            </div>
-            
-            {/* Traits */}
-            <div className="flex flex-wrap justify-center gap-2 pt-4">
-              {result?.traits.map((trait) => (
-                <span
-                  key={trait}
-                  className="px-4 py-2 bg-neutral-100 text-neutral-800 rounded-full text-sm font-medium"
-                >
-                  {trait}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="space-y-3 pt-6 border-t border-neutral-100">
-            <p className="text-sm text-neutral-600">
-              결과를 인스타그램에 공유해보세요
-            </p>
-            <div className="flex gap-3">
-              <button 
-                onClick={handleReset}
-                className="flex-1 px-6 py-3 bg-neutral-100 text-neutral-900 font-semibold rounded-xl hover:bg-neutral-200 transition-all"
-              >
-                다시 하기
-              </button>
-              <button 
-                onClick={() => window.open('https://instagram.com/dreaming_mandu', '_blank')}
-                className="flex-1 px-6 py-3 bg-neutral-900 text-white font-semibold rounded-xl hover:bg-neutral-800 transition-all"
-              >
-                공유하기
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          )
+        )}
+      </div>
     </Modal>
   )
 }

@@ -4,11 +4,11 @@ interface ModalProps {
   isOpen: boolean
   onClose: () => void
   children: ReactNode
-  title?: string
   size?: 'sm' | 'md' | 'lg'
+  scrollable?: boolean
 }
 
-export default function Modal({ isOpen, onClose, children, title, size = 'md' }: ModalProps) {
+export default function Modal({ isOpen, onClose, children, size = 'md', scrollable = true }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -31,12 +31,14 @@ export default function Modal({ isOpen, onClose, children, title, size = 'md' }:
   return (
     <>
       <div 
-        className="fixed inset-0 bg-black/50 z-40 animate-fade-in"
+        className="fixed inset-0 bg-black/70 backdrop-blur-[2px] backdrop-brightness-75 z-[9998]"
         onClick={onClose}
       />
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
         <div 
-          className={`relative bg-white rounded-3xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] overflow-y-auto animate-slide-up`}
+          className={`relative bg-white rounded-3xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] ${
+            scrollable ? 'overflow-y-auto' : 'overflow-hidden'
+          } animate-slide-up`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="p-6 sm:p-8">
