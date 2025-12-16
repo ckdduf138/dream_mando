@@ -40,7 +40,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['MissedGyuwon', '-apple-system', 'BlinkMacSystemFont', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Yeonseong', '-apple-system', 'BlinkMacSystemFont', 'Pretendard', 'Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in',

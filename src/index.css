@@ -6,8 +6,8 @@
 
 @layer base {
   @font-face {
-    font-family: 'MissedGyuwon';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2510-1@1.0/Griun_Gyuwon-Rg.woff2') format('woff2');
+    font-family: 'Yeonseong';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMYEONSUNG.woff') format('woff');
     font-weight: normal;
     font-display: swap;
   }
