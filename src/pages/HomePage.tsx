@@ -10,7 +10,7 @@ export default function HomePage() {
   const [isQuizOpen, setIsQuizOpen] = useState(false)
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen min-h-[100dvh] flex flex-col bg-white">
       {false && <Header />}
 
       <main className="flex-grow text-xl">
