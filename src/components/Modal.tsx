@@ -31,7 +31,7 @@ export default function Modal({ isOpen, onClose, children, size = 'md', scrollab
   return (
     <>
       <div 
-        className="fixed inset-0 bg-black/70 backdrop-blur-[2px] backdrop-brightness-75 z-[9998]"
+        className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-[9998]"
         onClick={onClose}
       />
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
