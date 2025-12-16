@@ -10,6 +10,7 @@ interface ModalProps {
 
 export default function Modal({ isOpen, onClose, children, size = 'md', scrollable = true }: ModalProps) {
   const scrollYRef = useRef(0)
+  const modalRef = useRef<HTMLDivElement | null>(null)
   const previousBodyStyleRef = useRef<{
     overflow: string
     position: string
@@ -83,7 +84,33 @@ export default function Modal({ isOpen, onClose, children, size = 'md', scrollab
     document.body.style.right = '0'
     document.body.style.width = '100%'
 
+    const preventScroll = (event: Event) => {
+      if (!scrollable) {
+        event.preventDefault()
+        return
+      }
+
+      const targetNode = event.target as Node | null
+      if (!targetNode) {
+        event.preventDefault()
+        return
+      }
+
+      // Allow scroll gestures that originate inside the modal content.
+      if (modalRef.current && modalRef.current.contains(targetNode)) return
+
+      // Block background scroll.
+      event.preventDefault()
+    }
+
+    // iOS Safari requires non-passive touchmove to reliably prevent background scroll.
+    document.addEventListener('touchmove', preventScroll, { passive: false })
+    document.addEventListener('wheel', preventScroll, { passive: false })
+
     return () => {
+      document.removeEventListener('touchmove', preventScroll)
+      document.removeEventListener('wheel', preventScroll)
+
       // Restore styles & scroll position.
       const previous = previousBodyStyleRef.current
       if (previous) {
@@ -132,6 +159,7 @@ export default function Modal({ isOpen, onClose, children, size = 'md', scrollab
       />
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
         <div 
+          ref={modalRef}
           className={`dm-modal relative bg-white rounded-3xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] font-[OngleipParkDahyeon] text-2xl ${
             scrollable ? 'overflow-y-auto' : 'overflow-hidden'
           } animate-slide-up`}
