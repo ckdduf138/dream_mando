@@ -37,7 +37,7 @@ export default function QuizQuestionScreen({
       />
 
       <div className="pt-5 [@media(max-height:740px)]:pt-4">
-        <h3 className="text-lg sm:text-xl font-bold text-neutral-900 leading-relaxed">{question}</h3>
+        <h3 className="text-3xl sm:text-4xl font-bold text-neutral-900 leading-relaxed">{question}</h3>
 
         <div className="mt-4 space-y-3">
           {choices.map((choice) => (

@@ -36,7 +36,7 @@ export default function Modal({ isOpen, onClose, children, size = 'md', scrollab
       />
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
         <div 
-          className={`relative bg-white rounded-3xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] ${
+          className={`dm-modal relative bg-white rounded-3xl shadow-2xl w-full ${sizes[size]} max-h-[90vh] font-[OngleipParkDahyeon] text-2xl ${
             scrollable ? 'overflow-y-auto' : 'overflow-hidden'
           } animate-slide-up`}
           onClick={(e) => e.stopPropagation()}

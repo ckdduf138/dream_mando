@@ -14,7 +14,7 @@ export default function QuizChoiceButton({
   return (
     <button
       onClick={onClick}
-      className={`w-full px-5 py-4 [@media(max-height:740px)]:py-3 text-left rounded-xl border-2 transition-all text-sm sm:text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 ${
+      className={`w-full px-5 py-4 [@media(max-height:740px)]:py-3 text-left rounded-xl border-2 transition-all text-xl sm:text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 ${
         isSelected
           ? 'border-primary-600 bg-white text-neutral-900'
           : isPreviouslySelected

@@ -6,8 +6,8 @@
 
 @layer base {
   @font-face {
-    font-family: 'Yeonseong';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMYEONSUNG.woff') format('woff');
+    font-family: 'OngleipParkDahyeon';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2') format('woff2');
     font-weight: normal;
     font-display: swap;
   }

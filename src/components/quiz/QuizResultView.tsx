@@ -35,13 +35,13 @@ export default function QuizResultView({
         </div>
 
         <div className="result-seq result-seq-1">
-          <h3 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">{result.title}</h3>
-          <p className="text-neutral-600 text-sm sm:text-lg">{result.description}</p>
+          <h3 className="text-4xl sm:text-5xl font-bold text-neutral-900 mb-2">{result.title}</h3>
+          <p className="text-neutral-600 text-2xl sm:text-3xl">{result.description}</p>
         </div>
 
         <div className="result-seq result-seq-2 flex flex-wrap justify-center gap-2 pt-3">
           {result.traits.map((trait) => (
-            <span key={trait} className="px-4 py-2 bg-neutral-100 text-neutral-800 rounded-full text-sm font-medium">
+            <span key={trait} className="px-4 py-2 bg-neutral-100 text-neutral-800 rounded-full text-xl font-medium">
               {trait}
             </span>
           ))}
@@ -52,13 +52,13 @@ export default function QuizResultView({
         <div className="flex gap-3">
           <button
             onClick={onReset}
-            className="flex-1 px-6 py-2.5 bg-primary-100 text-primary-900 font-semibold rounded-xl hover:bg-primary-200 transition-all"
+            className="flex-1 px-6 py-2.5 bg-primary-100 text-primary-900 font-semibold text-2xl rounded-xl hover:bg-primary-200 transition-all"
           >
             다시 하기
           </button>
           <button
             onClick={onShare}
-            className="flex-1 px-6 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all"
+            className="flex-1 px-6 py-2.5 bg-primary-600 text-white font-semibold text-2xl rounded-xl hover:bg-primary-700 transition-all"
           >
             공유하기
           </button>

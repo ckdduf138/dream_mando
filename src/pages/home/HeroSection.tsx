@@ -17,7 +17,7 @@ export default function HeroSection() {
 
       <div className="relative max-w-2xl mx-auto px-4 text-center">
         <h1
-          className={`reveal ${hero.inView ? 'is-visible' : ''} text-3xl sm:text-4xl md:text-5xl font-bold text-neutral-900 mb-4 tracking-tight`}
+          className={`reveal ${hero.inView ? 'is-visible' : ''} text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 mb-4 tracking-tight`}
         >
           잠시 멈춰 선 너에게<br />
           <span className="text-primary-600">진짜 나</span>를 찾아 떠나는 여정
@@ -41,12 +41,12 @@ export default function HeroSection() {
         </div>
 
         <h2
-          className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-2 text-2xl sm:text-3xl font-bold text-neutral-900 mb-2`}
+          className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-2 text-3xl sm:text-4xl font-bold text-neutral-900 mb-2`}
         >
           나의 속재료 찾기
         </h2>
         <p
-          className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-3 text-base sm:text-lg text-neutral-600`}
+          className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-3 text-xl sm:text-2xl text-neutral-600`}
         >
           10가지 질문으로 알아보는 나만의 만두 유형
         </p>

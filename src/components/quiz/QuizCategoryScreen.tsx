@@ -18,8 +18,8 @@ export default function QuizCategoryScreen({
     <div className="py-2 [@media(max-height:740px)]:py-1">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-base font-bold text-neutral-900">퀴즈 시작하기</div>
-          <div className="text-xs text-neutral-600">먼저 카테고리를 골라줘</div>
+          <div className="text-2xl font-bold text-neutral-900">퀴즈 시작하기</div>
+          <div className="text-lg text-neutral-600">먼저 카테고리를 골라줘</div>
         </div>
 
         <button
@@ -45,7 +45,7 @@ export default function QuizCategoryScreen({
                 : 'border-primary-200 hover:bg-neutral-50'
             }`}
           >
-            <div className="text-base font-bold text-neutral-900 text-center">{category.label}</div>
+            <div className="text-2xl font-bold text-neutral-900 text-center">{category.label}</div>
           </button>
         ))}
       </div>

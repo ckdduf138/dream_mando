@@ -33,7 +33,7 @@ export default function QuizTopBar({
           </svg>
         </button>
 
-        <div className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-neutral-900">
+        <div className="absolute left-1/2 -translate-x-1/2 text-xl font-semibold text-neutral-900">
           {step + 1} / {total}
         </div>
 

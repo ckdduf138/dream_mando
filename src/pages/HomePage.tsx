@@ -13,7 +13,7 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col bg-white">
       {false && <Header />}
 
-      <main className="flex-grow">
+      <main className="flex-grow text-xl">
         <HeroSection />
         <StorySection />
         <CTASection onStartQuiz={() => setIsQuizOpen(true)} />

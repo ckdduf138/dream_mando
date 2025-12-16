@@ -20,7 +20,7 @@ export default function StorySection() {
           />
 
           <h2
-            className={`reveal ${story.inView ? 'is-visible' : ''} text-2xl sm:text-3xl font-bold text-neutral-900 mb-8 relative z-10 tracking-tight text-center`}
+            className={`reveal ${story.inView ? 'is-visible' : ''} text-3xl sm:text-4xl font-bold text-neutral-900 mb-8 relative z-10 tracking-tight text-center`}
           >
             숨겨진 <span className="text-primary-600">나의 가치</span> 발견하기
           </h2>
@@ -38,8 +38,8 @@ export default function StorySection() {
                     <img src="/mandu.png" alt="" className="w-7 h-7 object-contain" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-base font-bold text-neutral-900 truncate">꿈꿀만두</div>
-                    <div className="text-sm text-neutral-600">오늘의 이야기</div>
+                    <div className="text-xl font-bold text-neutral-900 truncate">꿈꿀만두</div>
+                    <div className="text-lg text-neutral-600">오늘의 이야기</div>
                   </div>
                 </div>
               </div>
@@ -78,7 +78,7 @@ export default function StorySection() {
 
               <div className="relative">
                 <h3
-                  className={`reveal ${story.inView ? 'is-visible' : ''} reveal-delay-2 text-lg font-bold text-neutral-900 mb-5 text-center`}
+                  className={`reveal ${story.inView ? 'is-visible' : ''} reveal-delay-2 text-2xl font-bold text-neutral-900 mb-5 text-center`}
                 >
                   꿈꿀 만두가 너를 초대하는 이유
                 </h3>
@@ -90,7 +90,7 @@ export default function StorySection() {
                     </div>
                     <div className="flex-1">
                       <strong className="font-bold text-neutral-900 block mb-1">막연함은 지워버려</strong>
-                      <p className="text-sm text-neutral-600">너만의 특별한 만두소를 만두자</p>
+                      <p className="text-lg text-neutral-600">너만의 특별한 만두소를 만두자</p>
                     </div>
                   </div>
 
@@ -100,7 +100,7 @@ export default function StorySection() {
                     </div>
                     <div className="flex-1">
                       <strong className="font-bold text-neutral-900 block mb-1">나만의 캐릭터 만들기</strong>
-                      <p className="text-sm text-neutral-600">너 만의 만둘어 가지 않을래</p>
+                      <p className="text-lg text-neutral-600">너 만의 만둘어 가지 않을래</p>
                     </div>
                   </div>
 
@@ -110,7 +110,7 @@ export default function StorySection() {
                     </div>
                     <div className="flex-1">
                       <strong className="font-bold text-neutral-900 block mb-1">터지는 에너지</strong>
-                      <p className="text-sm text-neutral-600">만두는 역시 속이 꽉 차야지</p>
+                      <p className="text-lg text-neutral-600">만두는 역시 속이 꽉 차야지</p>
                     </div>
                   </div>
                 </div>

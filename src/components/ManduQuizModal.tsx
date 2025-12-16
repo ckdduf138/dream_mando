@@ -84,7 +84,7 @@ export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps)
   const previousAnswer = answers[step]
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} size="md" scrollable={false}>
+    <Modal isOpen={isOpen} onClose={handleClose} size="lg" scrollable={false}>
       <div className="relative">
         {/* 귀여운 만두 데코 (메인 톤과 연결) */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.08]">
