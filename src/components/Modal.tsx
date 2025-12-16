@@ -41,7 +41,7 @@ export default function Modal({ isOpen, onClose, children, size = 'md', scrollab
           } animate-slide-up`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="p-6 sm:p-8">
+          <div className="p-5 sm:p-8 [@media(max-height:740px)]:p-4">
             {children}
           </div>
         </div>
