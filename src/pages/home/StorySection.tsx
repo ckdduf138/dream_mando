@@ -45,7 +45,7 @@ export default function StorySection() {
               </div>
 
               {/* Body (근거: 본문은 읽기 흐름 중심, 들여쓰기=인용/강조 패턴) */}
-              <div className="px-5 sm:px-6 py-5 sm:py-6 space-y-4">
+              <div className="px-4 sm:px-5 py-5 sm:py-6 space-y-4">
                 <div className="pl-4 border-l-2 border-primary-200">
                   <p className="text-neutral-700 leading-relaxed">
                     숨겨진 너의 가치를 발견하고 온 세상에 너만의 빛을 선사할
