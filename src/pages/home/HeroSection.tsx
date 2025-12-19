@@ -1,6 +1,9 @@
 import useInView from '@hooks/useInView'
+import { useFontsReady } from '@hooks/useFontsReady'
+import { TextSkeleton } from '@components/TextSkeleton'
 
 export default function HeroSection() {
+  const showText = useFontsReady()
   const hero = useInView<HTMLElement>({ rootMargin: '0px 0px -20% 0px', threshold: 0.1 })
 
   return (
@@ -19,8 +22,18 @@ export default function HeroSection() {
         <h1
           className={`reveal ${hero.inView ? 'is-visible' : ''} text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 mb-4 tracking-tight`}
         >
-          잠시 멈춰 선 너에게<br />
-          <span className="text-primary-600">진짜 나</span>를 찾아 떠나는 여정
+          {showText ? (
+            <>
+              잠시 멈춰 선 너에게<br />
+              <span className="text-primary-600">진짜 나</span>를 찾아 떠나는 여정
+            </>
+          ) : (
+            <TextSkeleton
+              className="mx-auto"
+              lines={[58, 90]}
+              lineClassName="h-10 sm:h-12 md:h-14 rounded-xl bg-primary-100/70 mx-auto"
+            />
+          )}
         </h1>
 
         <div className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-1 flex justify-center mb-6`}>
@@ -43,12 +56,29 @@ export default function HeroSection() {
         <h2
           className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-2 text-3xl sm:text-4xl font-bold text-neutral-900 mb-2`}
         >
-          나의 속재료 찾기
+          {showText ? (
+            '나의 속재료 찾기'
+          ) : (
+            <TextSkeleton
+              className="mx-auto"
+              lines={[40]}
+              lineClassName="h-9 sm:h-10 rounded-xl bg-primary-100/70 mx-auto"
+            />
+          )}
         </h2>
+
         <p
           className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-3 text-xl sm:text-2xl text-neutral-600`}
         >
-          10가지 질문으로 알아보는 나만의 만두 유형
+          {showText ? (
+            '10가지 질문으로 알아보는 나만의 만두 유형'
+          ) : (
+            <TextSkeleton
+              className="mx-auto"
+              lines={[86]}
+              lineClassName="h-7 rounded-lg bg-primary-50/80 mx-auto"
+            />
+          )}
         </p>
       </div>
     </section>

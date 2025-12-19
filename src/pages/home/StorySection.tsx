@@ -1,6 +1,9 @@
 import useInView from '@hooks/useInView'
+import { useFontsReady } from '@hooks/useFontsReady'
+import { TextSkeleton } from '@components/TextSkeleton'
 
 export default function StorySection() {
+  const showText = useFontsReady()
   const story = useInView<HTMLElement>({ rootMargin: '0px 0px -20% 0px', threshold: 0.1 })
 
   return (
@@ -22,7 +25,17 @@ export default function StorySection() {
           <h2
             className={`reveal ${story.inView ? 'is-visible' : ''} text-3xl sm:text-4xl font-bold text-neutral-900 mb-8 relative z-10 tracking-tight text-center`}
           >
-            숨겨진 <span className="text-primary-600">나의 가치</span> 발견하기
+            {showText ? (
+              <>
+                숨겨진 <span className="text-primary-600">나의 가치</span> 발견하기
+              </>
+            ) : (
+              <TextSkeleton
+                className="mx-auto"
+                lines={[72]}
+                lineClassName="h-10 sm:h-12 rounded-xl bg-primary-100/70 mx-auto"
+              />
+            )}
           </h2>
         </div>
 
@@ -38,8 +51,17 @@ export default function StorySection() {
                     <img src="/mandu.png" alt="" className="w-7 h-7 object-contain" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xl font-bold text-neutral-900 truncate">꿈꿀만두</div>
-                    <div className="text-lg text-neutral-600">오늘의 이야기</div>
+                    {showText ? (
+                      <>
+                        <div className="text-xl font-bold text-neutral-900 truncate">꿈꿀만두</div>
+                        <div className="text-lg text-neutral-600">오늘의 이야기</div>
+                      </>
+                    ) : (
+                      <div className="space-y-2">
+                          <div className="h-6 rounded-lg bg-primary-100/70 w-24 animate-pulse" />
+                          <div className="h-5 rounded-lg bg-primary-50/80 w-32 animate-pulse" />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -47,16 +69,24 @@ export default function StorySection() {
               {/* Body (근거: 본문은 읽기 흐름 중심, 들여쓰기=인용/강조 패턴) */}
               <div className="px-4 sm:px-5 py-5 sm:py-6 space-y-4">
                 <div className="pl-4 border-l-2 border-primary-200">
-                  <p className="text-neutral-700 leading-relaxed">
-                    숨겨진 너의 가치를 발견하고 온 세상에 너만의 빛을 선사할
-                    <strong className="ml-1 font-bold text-neutral-900">운명적인 여정의 시작</strong>
-                  </p>
+                  {showText ? (
+                    <p className="text-neutral-700 leading-relaxed">
+                      숨겨진 너의 가치를 발견하고 온 세상에 너만의 빛을 선사할
+                      <strong className="ml-1 font-bold text-neutral-900">운명적인 여정의 시작</strong>
+                    </p>
+                  ) : (
+                    <TextSkeleton lines={[92, 84]} lineClassName="h-6 rounded-lg bg-primary-100/70" />
+                  )}
                 </div>
                 <div className="pl-4 border-l-2 border-primary-200">
-                  <p className="text-neutral-700 leading-relaxed">
-                    세상에서 단 하나뿐인 <strong className="font-bold text-neutral-900">진짜 나의 만두소</strong>를 채워줄
-                    삶의 나침반 같은 존재야
-                  </p>
+                  {showText ? (
+                    <p className="text-neutral-700 leading-relaxed">
+                      세상에서 단 하나뿐인 <strong className="font-bold text-neutral-900">진짜 나의 만두소</strong>를 채워줄
+                      삶의 나침반 같은 존재야
+                    </p>
+                  ) : (
+                    <TextSkeleton lines={[88, 76]} lineClassName="h-6 rounded-lg bg-primary-100/70" />
+                  )}
                 </div>
               </div>
             </div>
@@ -80,7 +110,11 @@ export default function StorySection() {
                 <h3
                   className={`reveal ${story.inView ? 'is-visible' : ''} reveal-delay-2 text-2xl font-bold text-neutral-900 mb-5 text-center`}
                 >
-                  꿈꿀 만두가 너를 초대하는 이유
+                  {showText ? (
+                    '꿈꿀 만두가 너를 초대하는 이유'
+                  ) : (
+                    <TextSkeleton className="mx-auto" lines={[76]} lineClassName="h-8 rounded-xl bg-primary-100/70 mx-auto" />
+                  )}
                 </h3>
 
                 <div className="space-y-4">
@@ -89,8 +123,17 @@ export default function StorySection() {
                       1
                     </div>
                     <div className="flex-1">
-                      <strong className="font-bold text-neutral-900 block mb-1">막연함은 지워버려</strong>
-                      <p className="text-lg text-neutral-600">너만의 특별한 만두소를 만두자</p>
+                        {showText ? (
+                          <>
+                            <strong className="font-bold text-neutral-900 block mb-1">막연함은 지워버려</strong>
+                            <p className="text-lg text-neutral-600">너만의 특별한 만두소를 만두자</p>
+                          </>
+                        ) : (
+                          <div className="space-y-2">
+                            <div className="h-6 rounded-lg bg-primary-100/70 w-44 animate-pulse" />
+                            <div className="h-5 rounded-lg bg-primary-50/80 w-60 animate-pulse" />
+                          </div>
+                        )}
                     </div>
                   </div>
 
@@ -99,8 +142,17 @@ export default function StorySection() {
                       2
                     </div>
                     <div className="flex-1">
-                      <strong className="font-bold text-neutral-900 block mb-1">나만의 캐릭터 만들기</strong>
-                      <p className="text-lg text-neutral-600">너 만의 만둘어 가지 않을래</p>
+                        {showText ? (
+                          <>
+                            <strong className="font-bold text-neutral-900 block mb-1">나만의 캐릭터 만들기</strong>
+                            <p className="text-lg text-neutral-600">너 만의 만둘어 가지 않을래</p>
+                          </>
+                        ) : (
+                          <div className="space-y-2">
+                            <div className="h-6 rounded-lg bg-primary-100/70 w-48 animate-pulse" />
+                            <div className="h-5 rounded-lg bg-primary-50/80 w-56 animate-pulse" />
+                          </div>
+                        )}
                     </div>
                   </div>
 
@@ -109,8 +161,17 @@ export default function StorySection() {
                       3
                     </div>
                     <div className="flex-1">
-                      <strong className="font-bold text-neutral-900 block mb-1">터지는 에너지</strong>
-                      <p className="text-lg text-neutral-600">만두는 역시 속이 꽉 차야지</p>
+                        {showText ? (
+                          <>
+                            <strong className="font-bold text-neutral-900 block mb-1">터지는 에너지</strong>
+                            <p className="text-lg text-neutral-600">만두는 역시 속이 꽉 차야지</p>
+                          </>
+                        ) : (
+                          <div className="space-y-2">
+                            <div className="h-6 rounded-lg bg-primary-100/70 w-36 animate-pulse" />
+                            <div className="h-5 rounded-lg bg-primary-50/80 w-64 animate-pulse" />
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
