@@ -16,11 +16,11 @@ export default function QuizChoiceButton({
       onClick={onClick}
       className={`w-full px-5 py-4 [@media(max-height:740px)]:py-3 text-left rounded-xl border-2 transition-all text-xl sm:text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-300 ${
         isSelected
-          ? 'border-primary-600 bg-white text-neutral-900'
+          ? 'border-primary-600 bg-[rgb(255_251_240_/_var(--tw-bg-opacity,_1))] text-neutral-900'
           : isPreviouslySelected
-          ? 'border-primary-200 bg-primary-50'
+          ? 'border-primary-200 bg-[rgb(255_251_240_/_var(--tw-bg-opacity,_1))]'
           : 'border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50'
-      }`}
+      } focus:bg-[rgb(255_251_240_/_var(--tw-bg-opacity,_1))] focus-visible:bg-[rgb(255_251_240_/_var(--tw-bg-opacity,_1))]`}
     >
       {text}
     </button>

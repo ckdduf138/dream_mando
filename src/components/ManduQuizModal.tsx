@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from '@components/Modal'
 import { studentQuestions, workerQuestions, calculateManduType, manduResults } from '@utils/manduData'
 import QuizCategoryScreen from '@components/quiz/QuizCategoryScreen'
 import QuizQuestionScreen from '@components/quiz/QuizQuestionScreen'
 import QuizResultView from '@components/quiz/QuizResultView'
+import { buildManduQuizStorage, saveManduQuizToStorage } from '@utils/manduQuizStorage'
 
 interface ManduQuizModalProps {
   isOpen: boolean
@@ -21,11 +22,19 @@ export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps)
   const questions = category === 'worker' ? workerQuestions : studentQuestions
 
   const commitAnswer = (answer: string) => {
-    const newAnswers = [...answers, answer]
-    setAnswers(newAnswers)
+    const nextAnswers = [...answers]
+    nextAnswers[step] = answer
+    setAnswers(nextAnswers)
     setSelectedChoice(null)
-    return newAnswers
+    return nextAnswers
   }
+
+  useEffect(() => {
+    if (!showResult) return
+    if (!category) return
+    const payload = buildManduQuizStorage(category, answers, questions)
+    saveManduQuizToStorage(payload)
+  }, [showResult, category, answers])
 
   const handlePrevious = () => {
     if (category && step === 0 && !showResult) {
@@ -41,19 +50,19 @@ export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps)
 
     if (step > 0) {
       const nextStep = step - 1
-      const nextAnswers = answers.slice(0, -1)
       setStep(nextStep)
-      setAnswers(nextAnswers)
-      setSelectedChoice(nextAnswers[nextStep] || null)
+      setSelectedChoice(answers[nextStep] || null)
     }
   }
 
   const handleChoiceClick = (choice: string) => {
     if (selectedChoice === choice) {
-      commitAnswer(choice)
+      const nextAnswers = commitAnswer(choice)
 
       if (step < questions.length - 1) {
-        setStep(step + 1)
+        const nextStep = step + 1
+        setStep(nextStep)
+        setSelectedChoice(nextAnswers[nextStep] || null)
         return
       }
 

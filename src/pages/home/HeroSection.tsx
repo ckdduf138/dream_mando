@@ -1,10 +1,17 @@
 import useInView from '@hooks/useInView'
 import { useFontsReady } from '@hooks/useFontsReady'
 import { TextSkeleton } from '@components/TextSkeleton'
+import { copyManduQuizFromStorage } from '@utils/manduQuizStorage'
 
 export default function HeroSection() {
   const showText = useFontsReady()
   const hero = useInView<HTMLElement>({ rootMargin: '0px 0px -20% 0px', threshold: 0.1 })
+
+  const revealClass = (extra: string) => `reveal ${hero.inView ? 'is-visible' : ''} ${extra}`
+
+  const handleCopyQuiz = async () => {
+    await copyManduQuizFromStorage()
+  }
 
   return (
     <section ref={hero.ref} className="relative py-14 sm:py-20 overflow-hidden">
@@ -20,7 +27,7 @@ export default function HeroSection() {
 
       <div className="relative max-w-2xl mx-auto px-4 text-center">
         <h1
-          className={`reveal ${hero.inView ? 'is-visible' : ''} text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 mb-4 tracking-tight`}
+          className={revealClass('text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900 mb-4 tracking-tight')}
         >
           {showText ? (
             <>
@@ -36,8 +43,20 @@ export default function HeroSection() {
           )}
         </h1>
 
-        <div className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-1 flex justify-center mb-6`}>
-          <div className="relative">
+        <div className={revealClass('reveal-delay-1 flex justify-center mb-6')}>
+          <div
+            className="relative"
+            role="button"
+            tabIndex={0}
+            onClick={handleCopyQuiz}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                void handleCopyQuiz()
+              }
+            }}
+            aria-label="퀴즈 결과 복사"
+          >
             {/* 만두 뒤 작은 배경(좋아했던 포인트 유지/강화) */}
             <div className="absolute inset-0 -z-10 flex items-center justify-center">
               <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-primary-100/70 blur-sm" />
@@ -54,7 +73,7 @@ export default function HeroSection() {
         </div>
 
         <h2
-          className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-2 text-3xl sm:text-4xl font-bold text-neutral-900 mb-2`}
+          className={revealClass('reveal-delay-2 text-3xl sm:text-4xl font-bold text-neutral-900 mb-2')}
         >
           {showText ? (
             '나의 속재료 찾기'
@@ -68,7 +87,7 @@ export default function HeroSection() {
         </h2>
 
         <p
-          className={`reveal ${hero.inView ? 'is-visible' : ''} reveal-delay-3 text-xl sm:text-2xl text-neutral-600`}
+          className={revealClass('reveal-delay-3 text-xl sm:text-2xl text-neutral-600')}
         >
           {showText ? (
             '10가지 질문으로 알아보는 나만의 만두 유형'
