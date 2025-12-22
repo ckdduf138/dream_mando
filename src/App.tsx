@@ -4,12 +4,15 @@ import HomePage from '@pages/HomePage'
 import './index.css'
 import { areFontsReady, loadFonts } from '@/fontLoader'
 import { FontStatusProvider } from '@hooks/useFontsReady'
+import Toast from '@components/Toast'
+import { ToastProvider, useToastController } from '@hooks/useToast'
 
 const MAX_WAIT_MS = 8000
 
 const App = () => {
   const [fontReady, setFontReady] = useState<boolean>(() => areFontsReady())
   const [showText, setShowText] = useState<boolean>(() => areFontsReady())
+  const { toast, contextValue } = useToastController()
 
   useLayoutEffect(() => {
     if (areFontsReady()) {
@@ -41,7 +44,10 @@ const App = () => {
 
   return (
     <FontStatusProvider value={{ showText, fontReady }}>
-      <HomePage />
+      <ToastProvider value={contextValue}>
+        <HomePage />
+        <Toast open={toast.open} message={toast.message} />
+      </ToastProvider>
     </FontStatusProvider>
   )
 }

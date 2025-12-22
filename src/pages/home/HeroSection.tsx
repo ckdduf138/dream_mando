@@ -2,15 +2,26 @@ import useInView from '@hooks/useInView'
 import { useFontsReady } from '@hooks/useFontsReady'
 import { TextSkeleton } from '@components/TextSkeleton'
 import { copyManduQuizFromStorage } from '@utils/manduQuizStorage'
+import { useToast } from '@hooks/useToast'
 
 export default function HeroSection() {
   const showText = useFontsReady()
   const hero = useInView<HTMLElement>({ rootMargin: '0px 0px -20% 0px', threshold: 0.1 })
+  const { showToast } = useToast()
 
   const revealClass = (extra: string) => `reveal ${hero.inView ? 'is-visible' : ''} ${extra}`
 
   const handleCopyQuiz = async () => {
-    await copyManduQuizFromStorage()
+    try {
+      const ok = await copyManduQuizFromStorage()
+      if (ok) {
+        showToast('복사됨')
+      } else {
+        showToast('복사할 결과가 없어요')
+      }
+    } catch {
+      showToast('복사에 실패했어요')
+    }
   }
 
   return (
