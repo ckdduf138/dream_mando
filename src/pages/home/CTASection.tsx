@@ -15,7 +15,7 @@ export default function CTASection({ onStartQuiz }: CTASectionProps) {
         <div className={`reveal ${cta.inView ? 'is-visible' : ''} bg-white rounded-2xl p-5 sm:p-6 border border-primary-100`}>
           <button
             onClick={onStartQuiz}
-            className="w-full px-8 py-5 bg-primary-600 hover:bg-primary-700 text-white text-2xl font-bold rounded-xl transition-all active:scale-95 hover:-translate-y-0.5 hover:shadow-sm mb-3"
+            className="w-full px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white text-2xl font-bold rounded-xl transition-all active:scale-95 hover:-translate-y-0.5 hover:shadow-sm mb-3"
           >
             {showText ? '테스트 시작하기' : <span className="inline-block h-7 rounded-lg bg-white/30 w-36 animate-pulse" />}
           </button>

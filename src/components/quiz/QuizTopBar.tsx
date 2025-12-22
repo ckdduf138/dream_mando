@@ -24,7 +24,9 @@ export default function QuizTopBar({
           onClick={onBack}
           disabled={backDisabled}
           className={`w-10 h-10 flex items-center justify-center rounded-full transition-colors ${
-            backDisabled ? 'text-neutral-300 cursor-not-allowed' : 'text-neutral-700 hover:bg-neutral-100'
+            backDisabled
+              ? 'text-neutral-300 cursor-not-allowed'
+              : 'text-neutral-700 [@media(hover:hover)]:hover:bg-neutral-100'
           }`}
           aria-label="이전"
         >
@@ -39,7 +41,7 @@ export default function QuizTopBar({
 
         <button
           onClick={onClose}
-          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors"
+          className="w-10 h-10 flex items-center justify-center rounded-full [@media(hover:hover)]:hover:bg-neutral-100 transition-colors"
           aria-label="닫기"
         >
           <svg className="w-6 h-6 text-neutral-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

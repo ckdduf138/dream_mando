@@ -89,8 +89,13 @@ export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps)
   }
 
   const currentQuestion = questions[step]
+  const currentChoices = [currentQuestion?.a1, currentQuestion?.a2].filter(
+    (value): value is string => Boolean(value)
+  )
   const result = showResult ? manduResults[calculateManduType(answers, questions)] : null
   const previousAnswer = answers[step]
+  const isLastStep = step === questions.length - 1
+  const isNoChoiceStep = currentChoices.length === 0
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size="lg" scrollable={false}>
@@ -121,13 +126,21 @@ export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps)
                 step={step}
                 total={questions.length}
                 question={currentQuestion.q}
-                choices={[currentQuestion.a1, currentQuestion.a2]}
+                choices={currentChoices}
                 selectedChoice={selectedChoice}
                 previousAnswer={previousAnswer}
                 onBack={handlePrevious}
                 onClose={handleClose}
                 onChoiceClick={handleChoiceClick}
                 backEnabled={step > 0 || Boolean(category)}
+                primaryActionLabel={isLastStep && isNoChoiceStep ? '결과 보기' : undefined}
+                onPrimaryAction={
+                  isLastStep && isNoChoiceStep
+                    ? () => {
+                        setShowResult(true)
+                      }
+                    : undefined
+                }
               />
             ) : (
               <QuizCategoryScreen
