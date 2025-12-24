@@ -2,7 +2,7 @@ import useInView from '@hooks/useInView'
 import { useFontsReady } from '@hooks/useFontsReady'
 import { TextSkeleton } from '@components/TextSkeleton'
 
-export default function StorySection() {
+const StorySection = () => {
   const showText = useFontsReady()
   const story = useInView<HTMLElement>({ rootMargin: '0px 0px -20% 0px', threshold: 0.1 })
 
@@ -145,7 +145,7 @@ export default function StorySection() {
                         {showText ? (
                           <>
                             <strong className="font-bold text-neutral-900 block mb-1">나만의 캐릭터 만들기</strong>
-                            <p className="text-lg text-neutral-600">너 만의 만둘어 가지 않을래</p>
+                            <p className="text-lg text-neutral-600">너만의 만두 만두러 가지 않을래</p>
                           </>
                         ) : (
                           <div className="space-y-2">
@@ -183,3 +183,5 @@ export default function StorySection() {
     </section>
   )
 }
+
+export default StorySection
