@@ -1,4 +1,6 @@
-export default function Footer() {
+import { Instagram } from 'lucide-react'
+
+const Footer = () => {
   return (
     <footer className="bg-white border-t border-neutral-100">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
@@ -12,8 +14,9 @@ export default function Footer() {
               href="https://instagram.com/dreaming_mandu" 
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-neutral-900 transition-colors"
+              className="hover:text-neutral-900 transition-colors inline-flex items-center gap-2"
             >
+              <Instagram className="w-4 h-4" />
               Instagram
             </a>
             <a href="#" className="hover:text-neutral-900 transition-colors">
@@ -28,3 +31,5 @@ export default function Footer() {
     </footer>
   )
 }
+
+export default Footer

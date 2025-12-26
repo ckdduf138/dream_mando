@@ -3,7 +3,7 @@ type ToastProps = {
   message: string
 }
 
-export default function Toast({ open, message }: ToastProps) {
+const Toast = ({ open, message }: ToastProps) => {
   return (
     <div
       aria-live="polite"
@@ -23,3 +23,5 @@ export default function Toast({ open, message }: ToastProps) {
     </div>
   )
 }
+
+export default Toast

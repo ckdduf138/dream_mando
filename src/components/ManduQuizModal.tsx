@@ -11,7 +11,7 @@ interface ManduQuizModalProps {
   onClose: () => void
 }
 
-export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps) {
+const ManduQuizModal = ({ isOpen, onClose }: ManduQuizModalProps) => {
   const [category, setCategory] = useState<'student' | 'worker' | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<'student' | 'worker' | null>(null)
   const [step, setStep] = useState(0)
@@ -176,3 +176,5 @@ export default function ManduQuizModal({ isOpen, onClose }: ManduQuizModalProps)
     </Modal>
   )
 }
+
+export default ManduQuizModal

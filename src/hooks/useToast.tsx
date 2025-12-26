@@ -16,7 +16,7 @@ type ToastContextValue = {
 
 const ToastContext = createContext<ToastContextValue | null>(null)
 
-export function useToast(): ToastContextValue {
+export const useToast = (): ToastContextValue => {
   const value = useContext(ToastContext)
   if (!value) {
     throw new Error('useToast must be used within ToastProvider')
@@ -24,7 +24,7 @@ export function useToast(): ToastContextValue {
   return value
 }
 
-export function useToastController() {
+export const useToastController = () => {
   const [toast, setToast] = useState<ToastState>({ open: false, message: '' })
   const timerRef = useRef<number | null>(null)
 
@@ -59,6 +59,6 @@ export function useToastController() {
   return { toast, contextValue }
 }
 
-export function ToastProvider({ value, children }: { value: ToastContextValue; children: React.ReactNode }) {
-  return <ToastContext.Provider value={value}>{children}</ToastContext.Provider>
-}
+export const ToastProvider = ({ value, children }: { value: ToastContextValue; children: React.ReactNode }) => (
+  <ToastContext.Provider value={value}>{children}</ToastContext.Provider>
+)

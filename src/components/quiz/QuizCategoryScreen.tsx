@@ -4,11 +4,11 @@ interface QuizCategoryScreenProps {
   onClose: () => void
 }
 
-export default function QuizCategoryScreen({
+const QuizCategoryScreen = ({
   selectedCategory,
   onCategoryClick,
   onClose
-}: QuizCategoryScreenProps) {
+}: QuizCategoryScreenProps) => {
   const categories: Array<{ key: 'student' | 'worker'; label: string }> = [
     { key: 'student', label: '대학생' },
     { key: 'worker', label: '직장인' }
@@ -52,3 +52,5 @@ export default function QuizCategoryScreen({
     </div>
   )
 }
+
+export default QuizCategoryScreen

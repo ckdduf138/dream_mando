@@ -1,4 +1,4 @@
-export default function Header() {
+const Header = () => {
   return (
     <header className="bg-white border-b border-neutral-100">
       <nav className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -11,3 +11,5 @@ export default function Header() {
     </header>
   )
 }
+
+export default Header

@@ -8,7 +8,13 @@ interface ModalProps {
   scrollable?: boolean
 }
 
-export default function Modal({ isOpen, onClose, children, size = 'md', scrollable = true }: ModalProps) {
+const Modal = ({
+  isOpen,
+  onClose,
+  children,
+  size = 'md',
+  scrollable = true
+}: ModalProps) => {
   const scrollYRef = useRef(0)
   const modalRef = useRef<HTMLDivElement | null>(null)
   const previousBodyStyleRef = useRef<{
@@ -173,3 +179,5 @@ export default function Modal({ isOpen, onClose, children, size = 'md', scrollab
     </>
   )
 }
+
+export default Modal

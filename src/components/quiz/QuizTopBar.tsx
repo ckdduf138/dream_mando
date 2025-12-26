@@ -6,13 +6,13 @@ interface QuizTopBarProps {
   backEnabled?: boolean
 }
 
-export default function QuizTopBar({
+const QuizTopBar = ({
   step,
   total,
   onBack,
   onClose,
   backEnabled
-}: QuizTopBarProps) {
+}: QuizTopBarProps) => {
   const backDisabled = backEnabled !== undefined ? !backEnabled : step <= 0
   const percent = total > 0 ? ((step + 1) / total) * 100 : 0
   const knobPercent = Math.min(96, Math.max(4, percent))
@@ -71,3 +71,5 @@ export default function QuizTopBar({
     </div>
   )
 }
+
+export default QuizTopBar

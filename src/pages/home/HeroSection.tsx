@@ -4,7 +4,7 @@ import { TextSkeleton } from '@components/TextSkeleton'
 import { copyManduQuizFromStorage } from '@utils/manduQuizStorage'
 import { useToast } from '@hooks/useToast'
 
-export default function HeroSection() {
+const HeroSection = () => {
   const showText = useFontsReady()
   const hero = useInView<HTMLElement>({ rootMargin: '0px 0px -20% 0px', threshold: 0.1 })
   const { showToast } = useToast()
@@ -114,3 +114,5 @@ export default function HeroSection() {
     </section>
   )
 }
+
+export default HeroSection

@@ -7,7 +7,7 @@ export interface UseInViewOptions {
   once?: boolean
 }
 
-export default function useInView<T extends Element>(options: UseInViewOptions = {}) {
+const useInView = <T extends Element>(options: UseInViewOptions = {}) => {
   const { root = null, rootMargin = '0px 0px -10% 0px', threshold = 0.15, once = true } = options
 
   const nodeRef = useRef<T | null>(null)
@@ -89,3 +89,5 @@ export default function useInView<T extends Element>(options: UseInViewOptions =
 
   return { ref: setRef, inView }
 }
+
+export default useInView
