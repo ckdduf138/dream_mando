@@ -8,14 +8,14 @@ export const BasicFrameDecoration: React.FC = () => (
     <img
       src={BASIC_FRAME_ASSETS.background}
       alt="background"
-      className="absolute inset-0 w-full h-full object-cover z-0"
+      className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
       draggable={false}
     />
     {/* 마스킹 */}
     <img
       src={BASIC_FRAME_ASSETS.masking}
       alt="masking"
-      className="absolute inset-0 w-full h-full object-cover z-20"
+      className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none"
       draggable={false}
     />
     {/* 오버레이 */}
