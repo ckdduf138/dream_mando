@@ -3,13 +3,8 @@ import { FourCutFrameConfig, FourCutRect } from '@utils/fourcutFrames'
 import { BasicFrameDecoration } from './components/BasicFrameDecoration'
 import { usePointerPinchDrag, DragPinchState } from '@hooks/usePointerPinchDrag'
 import { ImageUp } from 'lucide-react'
-
-export type FourCutSlotState = {
-  imageUrl: string | null
-  offsetX: number
-  offsetY: number
-  zoom: number
-}
+import type { FourCutSlotState } from '@/types/fourcut'
+import { MIN_ZOOM, MAX_ZOOM, WHEEL_ZOOM_SENSITIVITY } from '@/types/fourcut' 
 
 type Props = {
   frame: FourCutFrameConfig
@@ -23,9 +18,9 @@ type Props = {
 
 const clamp = (n: number, min: number, max: number): number => Math.max(min, Math.min(max, n))
 
-const applyWheelZoom = (currentZoom: number, deltaY: number, minZoom = 0.5, maxZoom = 2) => {
+const applyWheelZoom = (currentZoom: number, deltaY: number, minZoom = MIN_ZOOM, maxZoom = MAX_ZOOM) => {
   // Negative deltaY usually means zoom in on trackpad.
-  const factor = Math.exp(-deltaY * 0.002)
+  const factor = Math.exp(-deltaY * WHEEL_ZOOM_SENSITIVITY)
   return clamp(currentZoom * factor, minZoom, maxZoom)
 }
 
@@ -105,9 +100,7 @@ const Slot: React.FC<SlotProps> = ({ idx, rect, slot, onSelect, onUpdateSlot, on
       onWheel={(e: any) => {
         if (!slot.imageUrl) return
         e.preventDefault()
-        const minZoom = 0.5
-        const maxZoom = 2
-        const nextZoom = applyWheelZoom(slot.zoom, e.deltaY, minZoom, maxZoom)
+        const nextZoom = applyWheelZoom(slot.zoom, e.deltaY, MIN_ZOOM, MAX_ZOOM)
         if (nextZoom === slot.zoom) return
         onUpdateSlot(idx, { ...slot, zoom: nextZoom })
       }}
@@ -154,7 +147,7 @@ const FourCutFrameEditor = ({
   onRequestUpload,
   frameContainerRef,
 }: Props) => {
-  const { onPointerDown, onPointerMove, onPointerUpOrCancel } = usePointerPinchDrag({ minZoom: 0.5, maxZoom: 2 })
+  const { onPointerDown, onPointerMove, onPointerUpOrCancel } = usePointerPinchDrag({ minZoom: MIN_ZOOM, maxZoom: MAX_ZOOM })
 
   const slotRects = useMemo(() => frame.slots, [frame.slots])
 

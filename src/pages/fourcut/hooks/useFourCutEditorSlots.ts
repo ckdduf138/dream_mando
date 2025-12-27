@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useToast } from '@hooks/useToast'
-import { FourCutSlotState } from '@pages/fourcut/FourCutFrameEditor'
+import type { FourCutSlotState } from '@/types/fourcut' 
 
 const DEFAULT_SLOT: FourCutSlotState = {
   imageUrl: null,

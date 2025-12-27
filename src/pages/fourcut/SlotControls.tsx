@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { FourCutSlotState } from './FourCutFrameEditor'
+import type { FourCutSlotState } from '@/types/fourcut'
+import { MIN_ZOOM, MAX_ZOOM } from '@/types/fourcut' 
 
 type Props = {
   index: number
@@ -22,7 +23,7 @@ const SlotControls = ({
   onResetTransform,
   onZoomChange,
 }: Props) => {
-  const zoomValue = useMemo(() => clamp(slot.zoom, 1, 3), [slot.zoom])
+  const zoomValue = useMemo(() => clamp(slot.zoom, MIN_ZOOM, MAX_ZOOM), [slot.zoom])
 
   return (
     <div className="bg-white rounded-2xl border border-neutral-200 p-4">
@@ -60,8 +61,8 @@ const SlotControls = ({
         </div>
         <input
           type="range"
-          min={1}
-          max={3}
+          min={MIN_ZOOM}
+          max={MAX_ZOOM}
           step={0.01}
           value={zoomValue}
           onChange={(e) => onZoomChange(Number(e.target.value))}

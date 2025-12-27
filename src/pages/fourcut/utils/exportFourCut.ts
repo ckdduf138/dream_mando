@@ -1,5 +1,5 @@
+import { FourCutSlotState } from '@/types/fourcut'
 import type { FourCutFrameConfig } from '@utils/fourcutFrames'
-import type { FourCutSlotState } from '@pages/fourcut/FourCutFrameEditor'
 
 type ExportOptions = {
   /** The pixel width of the exported strip canvas. Height is derived from frame aspectRatio. */
@@ -45,10 +45,6 @@ const drawCoverImage = (
   ctx.drawImage(img, cx - drawW / 2, cy - drawH / 2, drawW, drawH)
 }
 
-
-
-
-
 const drawStickerAt = (
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -93,37 +89,6 @@ export const exportFourCutToBlob = async (
     const img = await loadImage(src)
     overlayCache.set(src, img)
     return img
-  }
-
-  // Strip-level mandu decals (outside slots too)
-  {
-    const base = Math.min(widthPx, heightPx)
-    const decals: Array<{ src: string; nx: number; ny: number; size: number; rotate: number; alpha: number }> = [
-      { src: '/mandu.png', nx: 0.06, ny: 0.16, size: 0.24, rotate: 12, alpha: 0.12 },
-      { src: '/mandu2.png', nx: 0.94, ny: 0.26, size: 0.24, rotate: -12, alpha: 0.12 },
-      { src: '/mandu.png', nx: 0.95, ny: 0.88, size: 0.28, rotate: 6, alpha: 0.10 },
-    ]
-
-    const prevComposite = ctx.globalCompositeOperation
-    const prevFilter = ctx.filter
-    ctx.globalCompositeOperation = 'multiply'
-    ctx.filter = 'blur(0.5px)'
-
-    for (const decal of decals) {
-      const img = await ensureOverlay(decal.src)
-      drawStickerAt(
-        ctx,
-        img,
-        widthPx * decal.nx,
-        heightPx * decal.ny,
-        base * decal.size,
-        decal.rotate,
-        decal.alpha,
-      )
-    }
-
-    ctx.filter = prevFilter
-    ctx.globalCompositeOperation = prevComposite
   }
 
   // 2. z-10: 사용자 이미지 (각 slot)
