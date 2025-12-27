@@ -6,7 +6,7 @@ import { areFontsReady, loadFonts } from '@/fontLoader'
 import { FontStatusProvider } from '@hooks/useFontsReady'
 import Toast from '@components/Toast'
 import { ToastProvider, useToastController } from '@hooks/useToast'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import FourCutPage from '@pages/FourCutPage'
 import FourCutEditorPage from '@pages/FourCutEditorPage'
 
@@ -52,10 +52,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
 
-            {/* FourCut pages */}
             <Route path="/fourcut" element={<FourCutPage />} />
             <Route path="/fourcut/:frameId" element={<FourCutEditorPage />} />
-            <Route path="/forcut" element={<Navigate to="/fourcut" replace />} />
           </Routes>
         </BrowserRouter>
 
