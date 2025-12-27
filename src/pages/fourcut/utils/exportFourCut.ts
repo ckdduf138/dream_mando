@@ -156,15 +156,9 @@ export const exportFourCutToBlob = async (
   const ctx = canvas.getContext('2d')
   if (!ctx) throw new Error('No canvas context')
 
-  // Background
-  ctx.fillStyle = resolveTailwindBgColor('bg-primary-50', '#ffffff')
-  ctx.fillRect(0, 0, widthPx, heightPx)
-
-  // Frame image as background (so it never covers slot photos)
-  if (frame.frameSrc) {
-    const bg = await loadImage(frame.frameSrc)
-    ctx.drawImage(bg, 0, 0, widthPx, heightPx)
-  }
+  // 1. z-0: background.svg
+  const bgImg = await loadImage('/fourcut/basic/background.svg')
+  ctx.drawImage(bgImg, 0, 0, widthPx, heightPx)
 
   // Preload mandu assets once
   const overlayCache = new Map<string, HTMLImageElement>()
@@ -207,41 +201,18 @@ export const exportFourCutToBlob = async (
     ctx.globalCompositeOperation = prevComposite
   }
 
-  // Draw each slot (clipped) and its image.
+  // 2. z-10: 사용자 이미지 (각 slot)
   for (let i = 0; i < frame.slots.length; i += 1) {
     const rect = frame.slots[i]
     const slot = slots[i]
-
     const x = (rect.leftPct / 100) * widthPx
     const y = (rect.topPct / 100) * heightPx
     const w = (rect.widthPct / 100) * widthPx
     const h = (rect.heightPct / 100) * heightPx
-
-    // Slot background
     ctx.save()
     ctx.beginPath()
     ctx.rect(x, y, w, h)
     ctx.clip()
-
-    // Slot background fill (subtle)
-    ctx.fillStyle = '#f5f5f5'
-    ctx.fillRect(x, y, w, h)
-
-    // Mandu background decals (behind photo) - always
-    {
-      const overlays = getManduBgOverlaysForSlot(i)
-      for (const overlay of overlays) {
-        const overlayImg = await ensureOverlay(overlay.src)
-        const prevComposite = ctx.globalCompositeOperation
-        const prevFilter = ctx.filter
-        ctx.globalCompositeOperation = 'multiply'
-        ctx.filter = 'blur(0.3px)'
-        drawCornerSticker(ctx, overlayImg, x, y, w, h, overlay.corner, overlay.rotate, 0.18, 0.36, 0.07)
-        ctx.filter = prevFilter
-        ctx.globalCompositeOperation = prevComposite
-      }
-    }
-
     if (slot?.imageUrl) {
       const img = await loadImage(slot.imageUrl)
       drawCoverImage(
@@ -256,26 +227,16 @@ export const exportFourCutToBlob = async (
         slot.offsetY * options.editorToExportScale,
       )
     }
-
-    // Mandu foreground stickers (on top of photo) - always
-    {
-      const overlays = getManduFgOverlaysForSlot(i)
-      for (const overlay of overlays) {
-        const overlayImg = await ensureOverlay(overlay.src)
-        const prevComposite = ctx.globalCompositeOperation
-        ctx.globalCompositeOperation = 'multiply'
-        drawCornerSticker(ctx, overlayImg, x, y, w, h, overlay.corner, overlay.rotate, 0.38, 0.28, 0.06)
-        ctx.globalCompositeOperation = prevComposite
-      }
-    }
-
     ctx.restore()
-
-    // Slot border
-    ctx.strokeStyle = '#e5e5e5'
-    ctx.lineWidth = Math.max(2, Math.round(widthPx * 0.002))
-    ctx.strokeRect(x, y, w, h)
   }
+
+  // 3. z-20: masking.svg (사진 위에 마스킹)
+  const maskImg = await loadImage('/fourcut/basic/masking.svg')
+  ctx.drawImage(maskImg, 0, 0, widthPx, heightPx)
+
+  // 4. z-30: overlay.svg (항상 맨 위)
+  const overlayImg = await loadImage('/fourcut/basic/overlay.svg')
+  ctx.drawImage(overlayImg, 0, 0, widthPx, heightPx)
 
   // Very subtle foreground strip decal (can overlap photos)
   {
