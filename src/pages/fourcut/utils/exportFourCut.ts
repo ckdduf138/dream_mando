@@ -8,21 +8,6 @@ type ExportOptions = {
   editorToExportScale: number
 }
 
-const resolveTailwindBgColor = (className: string, fallback: string) => {
-  try {
-    const el = document.createElement('div')
-    el.className = className
-    el.style.position = 'absolute'
-    el.style.left = '-9999px'
-    el.style.top = '-9999px'
-    document.body.appendChild(el)
-    const color = window.getComputedStyle(el).backgroundColor
-    document.body.removeChild(el)
-    return color && color !== 'rgba(0, 0, 0, 0)' ? color : fallback
-  } catch {
-    return fallback
-  }
-}
 
 const loadImage = (src: string) =>
   new Promise<HTMLImageElement>((resolve, reject) => {
@@ -60,69 +45,9 @@ const drawCoverImage = (
   ctx.drawImage(img, cx - drawW / 2, cy - drawH / 2, drawW, drawH)
 }
 
-type Corner = 'tl' | 'tr' | 'bl' | 'br'
 
-type ManduOverlayConfig = { src: string; corner: Corner; rotate: number }
 
-const getManduBgOverlaysForSlot = (index: number): ManduOverlayConfig[] => {
-  const configs: Array<Array<ManduOverlayConfig>> = [
-    [
-      { src: '/mandu.png', corner: 'tl', rotate: 12 },
-      { src: '/mandu2.png', corner: 'br', rotate: -12 },
-    ],
-    [
-      { src: '/mandu2.png', corner: 'tr', rotate: -12 },
-      { src: '/mandu.png', corner: 'bl', rotate: 12 },
-    ],
-    [
-      { src: '/mandu.png', corner: 'tl', rotate: -6 },
-      { src: '/mandu2.png', corner: 'tr', rotate: 6 },
-    ],
-    [
-      { src: '/mandu2.png', corner: 'bl', rotate: 6 },
-      { src: '/mandu.png', corner: 'br', rotate: -6 },
-    ],
-  ]
 
-  return configs[index % configs.length]
-}
-
-const getManduFgOverlaysForSlot = (index: number): ManduOverlayConfig[] => {
-  const configs: Array<Array<ManduOverlayConfig>> = [
-    [{ src: '/mandu.png', corner: 'tr', rotate: 12 }],
-    [{ src: '/mandu2.png', corner: 'bl', rotate: -12 }],
-    [{ src: '/mandu.png', corner: 'br', rotate: -6 }],
-    [{ src: '/mandu2.png', corner: 'tl', rotate: 6 }],
-  ]
-  return configs[index % configs.length]
-}
-
-const drawCornerSticker = (
-  ctx: CanvasRenderingContext2D,
-  img: HTMLImageElement,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  corner: Corner,
-  rotateDeg: number,
-  alpha = 0.14,
-  sizeScale = 0.32,
-  marginScale = 0.06,
-) => {
-  const size = Math.min(w, h) * sizeScale
-  const margin = Math.min(w, h) * marginScale
-
-  const cx = corner.includes('r') ? x + w - margin - size / 2 : x + margin + size / 2
-  const cy = corner.includes('b') ? y + h - margin - size / 2 : y + margin + size / 2
-
-  ctx.save()
-  ctx.translate(cx, cy)
-  ctx.rotate((rotateDeg * Math.PI) / 180)
-  ctx.globalAlpha = alpha
-  ctx.drawImage(img, -size / 2, -size / 2, size, size)
-  ctx.restore()
-}
 
 const drawStickerAt = (
   ctx: CanvasRenderingContext2D,
