@@ -92,7 +92,7 @@ const FourCutEditorPage = () => {
 
   return (
     <div className="min-h-screen min-h-[100dvh] bg-white">
-      <FourCutTopBar title="네컷 만들기" leftLabel="프레임" onLeft={() => navigate('/fourcut')} />
+      <FourCutTopBar title="네컷 만들기" leftLabel="예시" onLeft={() => navigate('/fourcut')} />
 
       <main className="max-w-5xl mx-auto px-4 py-6">
         <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
