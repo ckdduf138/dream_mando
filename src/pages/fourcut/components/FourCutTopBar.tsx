@@ -9,7 +9,7 @@ import { ChevronLeft } from 'lucide-react'
 
 const FourCutTopBar = ({ title, leftLabel, onLeft, rightSpacerWidthClass = 'w-[76px]' }: Props) => {
   return (
-    <div className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-neutral-100">
+    <div className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-neutral-100">
       <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
         <button
           onClick={onLeft}

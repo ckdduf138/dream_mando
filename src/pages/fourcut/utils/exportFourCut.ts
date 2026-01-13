@@ -1,11 +1,15 @@
 import { FourCutSlotState } from '@/types/fourcut'
+import { EDITOR_IMAGE_OVERFILL } from '@/types/fourcut'
 import type { FourCutFrameConfig } from '@utils/fourcutFrames'
 
 type ExportOptions = {
   /** The pixel width of the exported strip canvas. Height is derived from frame aspectRatio. */
   widthPx?: number
   /** Scale factor from editor pixels -> export pixels (computed from DOM size). */
-  editorToExportScale: number
+  editorToExportScale?: number
+  /** Separate X/Y scale factors (preferred to avoid rounding/aspect drift). */
+  editorToExportScaleX?: number
+  editorToExportScaleY?: number
 }
 
 
@@ -31,8 +35,8 @@ const drawCoverImage = (
   const imgW = img.naturalWidth || img.width
   const imgH = img.naturalHeight || img.height
 
-  // Base cover scale to fill the slot.
-  const baseScale = Math.max(w / imgW, h / imgH)
+  // Base cover scale to fill the slot, plus the same tiny overfill used in the editor.
+  const baseScale = Math.max(w / imgW, h / imgH) * EDITOR_IMAGE_OVERFILL
   const scale = baseScale * zoom
 
   const drawW = imgW * scale
@@ -69,6 +73,9 @@ export const exportFourCutToBlob = async (
 ): Promise<Blob> => {
   const widthPx = options.widthPx ?? 1200
   const heightPx = Math.round(widthPx / frame.aspectRatio)
+
+  const scaleX = options.editorToExportScaleX ?? options.editorToExportScale ?? 1
+  const scaleY = options.editorToExportScaleY ?? options.editorToExportScale ?? 1
 
   const canvas = document.createElement('canvas')
   canvas.width = widthPx
@@ -113,8 +120,8 @@ export const exportFourCutToBlob = async (
         w,
         h,
         slot.zoom,
-        slot.offsetX * options.editorToExportScale,
-        slot.offsetY * options.editorToExportScale,
+        slot.offsetX * scaleX,
+        slot.offsetY * scaleY,
       )
     }
     ctx.restore()

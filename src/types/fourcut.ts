@@ -25,3 +25,7 @@ export const MAX_ZOOM = 2
 
 // Wheel zoom sensitivity (smaller = less zoom per wheel delta)
 export const WHEEL_ZOOM_SENSITIVITY = 0.002
+
+// The editor renders slot images slightly oversized to avoid tiny edge gaps.
+// Keep this in sync with export to avoid position/scale mismatches.
+export const EDITOR_IMAGE_OVERFILL = 1.1

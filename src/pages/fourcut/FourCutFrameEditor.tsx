@@ -4,7 +4,7 @@ import { BasicFrameDecoration } from './components/BasicFrameDecoration'
 import { usePointerPinchDrag, DragPinchState } from '@hooks/usePointerPinchDrag'
 import { ImageUp } from 'lucide-react'
 import type { FourCutSlotState } from '@/types/fourcut'
-import { MIN_ZOOM, MAX_ZOOM, WHEEL_ZOOM_SENSITIVITY } from '@/types/fourcut' 
+import { MIN_ZOOM, MAX_ZOOM, WHEEL_ZOOM_SENSITIVITY, EDITOR_IMAGE_OVERFILL } from '@/types/fourcut' 
 
 type Props = {
   frame: FourCutFrameConfig
@@ -110,9 +110,11 @@ const Slot: React.FC<SlotProps> = ({ idx, rect, slot, onSelect, onUpdateSlot, on
           src={slot.imageUrl}
           alt=""
           draggable={false}
-          className="absolute left-1/2 top-1/2 max-w-none select-none w-[110%] h-[110%] object-cover"
+          className="absolute left-1/2 top-1/2 max-w-none select-none object-cover"
           style={{
             zIndex: 1,
+            width: `${EDITOR_IMAGE_OVERFILL * 100}%`,
+            height: `${EDITOR_IMAGE_OVERFILL * 100}%`,
             transform: `translate(-50%, -50%) translate(${slot.offsetX}px, ${slot.offsetY}px) scale(${slot.zoom})`,
             transformOrigin: 'center',
           }}

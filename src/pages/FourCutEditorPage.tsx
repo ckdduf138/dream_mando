@@ -62,11 +62,18 @@ const FourCutEditorPage = () => {
     }
 
     const rect = frameContainerRef.current.getBoundingClientRect()
-    const editorToExportScale = rect.width > 0 ? 1200 / rect.width : 1
+    const exportWidthPx = 1200
+    const exportHeightPx = Math.round(exportWidthPx / frame.aspectRatio)
+    const editorToExportScaleX = rect.width > 0 ? exportWidthPx / rect.width : 1
+    const editorToExportScaleY = rect.height > 0 ? exportHeightPx / rect.height : 1
 
     try {
       setDownloading(true)
-      const blob = await exportFourCutToBlob(frame, slots, { widthPx: 1200, editorToExportScale })
+      const blob = await exportFourCutToBlob(frame, slots, {
+        widthPx: exportWidthPx,
+        editorToExportScaleX,
+        editorToExportScaleY,
+      })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
