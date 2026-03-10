@@ -42,7 +42,7 @@ export const studentQuestions: ManduQuestion[] = [
   },
   {
     q: '나는 나의 만두를 위해',
-    a1: '미래에 투자 한다(주식)',
+    a1: '미래에 투자한다(주식)',
     a2: '현재에 투자한다(옷, 취미, 학원)'
   },
   {
